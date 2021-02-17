@@ -2,16 +2,24 @@ from bs4 import BeautifulSoup
 import requests
 import validators
 
-url = input("Please enter url of your product: ")
 
-validate_url = validators.url(url)
+HEADERS = ({'User-Agent':
+            'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.157 Safari/537.36',
+            'Accept-Language': 'en-US, en;q=0.5'})
+            
 
-if validate_url:
-    page = requests.get(url)
+def get_price():
+    url = input("Place URL for an amazon product: ")
 
-    soup = BeautifulSoup(page.content, "html.parser")
+    validate_url = validators.url(url)
+    if validate_url:
+        page = requests.get(url, headers=HEADERS)
 
-    price = soup.find_all("div", class_="a-box-inner")
-    print(price)
-else:
-    print("URL no valida!")
+        soup = BeautifulSoup(page.content, "html.parser")
+
+        span = soup.find("span", attrs={"id":"price_inside_buybox"}).string.strip()
+        return span
+    else:
+        return "URL not valid!"
+
+print(get_price())
