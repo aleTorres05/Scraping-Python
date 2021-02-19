@@ -21,7 +21,7 @@ def get_price():
             span = soup.find("span", attrs={"id":"price_inside_buybox"}).string.strip()
             return span
         else:
-            return "URL not valid!"
+            return "URL not valid, Please place an Amazon URL!"
     else:
             return "Not a URL!"
 
